@@ -15,7 +15,7 @@ The easiest way to add `Leslie` to your project is via Gradle, you just need to 
        }
 
 # Adding Library as a Dependency - Eclipse <img src="http://25.media.tumblr.com/35a8cb9885a9b9395752761839e5bd11/tumblr_mh5l0vxW9p1qd6sgco1_250.gif" width="10%" height="10%">
-I guess you can always copy the `java` files and paste them in your project or you can build the project with gradle and grab its `aar` output to add in your buildpath.
+I guess you can always copy the `java` files and paste them in your project or you can download the latest `aar` [here](http://search.maven.org/remotecontent?filepath=com/github/vinitius/leslie/1.0/leslie-1.0.aar).
 
 # Usage
 `Leslie` will perform an automatic view bind for your `Activity`, `Fragment` or whatever based on each view's tag defined in your `xml` layout. Not so clear, right? Let's see some examples:
@@ -71,11 +71,13 @@ Now, consider the following fragment: `MainFragment.java`
     }
 ```
 
-**Note**: The `tag` attribute of each view must be exactly the same name of the corresponding `field` in the `class`
+**Note**: The `tag` attribute of each view must be exactly the same name of the corresponding `field` in the `class`.
 
-**Note 2**: After `Leslie` is done with the binding , you can do whatever you want with the `tag` attribute in each view
+**Note 2**: After `Leslie` is done with the binding , you can do whatever you want with the `tag` attribute in each view.
 
 **Note 3**: All views you want to bind from the `xml` must contain a valid `id` attribute, as it has always been. No changes here.
+
+**Note 4**: `Leslie` makes use of `reflection`, it does not generate code.
 
 # Leslie/UI
 If you have no problem extending new `classes`, `Leslie` also offers an easier way:
@@ -132,7 +134,7 @@ If you have no problem extending new `classes`, `Leslie` also offers an easier w
     private TextView mTitle;
     private TextView mName;
 
-    public ModelAdapter(Context context, List collection) {
+    public ModelAdapter(Context context, List<Model> collection) {
         super(context, collection);
     }
 
@@ -201,6 +203,8 @@ If you have no problem extending new `classes`, `Leslie` also offers an easier w
   mList.setAdapter(adapter);
   ...
   ```
+  
+ 
   
 # License    
       Copyright 2015 Vinítius Salomão
