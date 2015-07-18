@@ -18,9 +18,10 @@ The easiest way to add `Leslie` to your project is via Gradle, you just need to 
 I guess you can always copy the `java` files and paste them in your project or you can download the latest `aar` [here](http://search.maven.org/remotecontent?filepath=com/github/vinitius/leslie/1.0/leslie-1.0.aar).
 
 # Usage
+     Leslie.with(context).bind(R.layout.your_layout).to(this);
 `Leslie` will perform an automatic view bind for your `Activity`, `Fragment` or whatever based on each view's tag defined in your `xml` layout. Not so clear, right? Let's see some examples:
 
-Consider this file as a valid layout for some activity. Let's call it: `main_activity.xml`
+Consider this file as a valid layout for some activity. Let's call it: `main_layout.xml`
 
 ```xml
     <TextView
@@ -37,7 +38,7 @@ Consider this file as a valid layout for some activity. Let's call it: `main_act
         ></ListView>
 ```
 
-Now, consider the following activity: `MainActivity.java`
+Now, consider the following `Activity`: `MainActivity.java`
 
 ```java
     private TextView mTxtHello;
@@ -45,7 +46,7 @@ Now, consider the following activity: `MainActivity.java`
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Leslie.with(context).bind(R.layout.main_activity).to(this);
+        Leslie.with(this).bind(R.layout.main_activity).to(this);
         
         //Now , just do whatever you want with all the views inside your layout. No setContentView,no findViewById,no annotations...
         Toast.makeText(this,mTxtHello.getTag().toString(),Toast.LENGHT_LONG).show();
@@ -53,7 +54,7 @@ Now, consider the following activity: `MainActivity.java`
     }
 ```
 
-Now, consider the following fragment: `MainFragment.java`
+You can also use `Leslie` with your `Fragment`: `MainFragment.java`
 
 ```java
     private TextView mTxtHello;
@@ -61,7 +62,7 @@ Now, consider the following fragment: `MainFragment.java`
     @Override
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent,Bundle savedInstanceState) {
         
-        View v = Leslie.with(context).bind(R.layout.main_activity).to(this);
+        View v = Leslie.with(getActivity()).bind(R.layout.main_layout).to(this);
         
         //Now , just do whatever you want with all the views inside your layout. No setContentView,no findViewById,no annotations...
         Toast.makeText(this,mTxtHello.getTag().toString(),Toast.LENGHT_LONG).show();
@@ -71,13 +72,27 @@ Now, consider the following fragment: `MainFragment.java`
     }
 ```
 
+Use `Leslie` with the new `RecyclerView.ViewHolder`:
+```java
+...
+ public static class ViewHolder extends RecyclerView.ViewHolder {
+     public TextView mTxtHello;
+     public ListView mList;
+ 
+        public ViewHolder(View itemView) {
+            super(itemView);
+            Leslie.with(itemView.getContext()).bind(itemView).to(this);
+        }
+    }
+```
+
 **Note**: The `tag` attribute of each view must be exactly the same name of the corresponding `field` in the `class`.
 
 **Note 2**: After `Leslie` is done with the binding , you can do whatever you want with the `tag` attribute in each view.
 
 **Note 3**: All views you want to bind from the `xml` must contain a valid `id` attribute, as it has always been. No changes here.
 
-**Note 4**: `Leslie` makes use of `reflection`, it does not generate code.
+**Note 4**: `Leslie` targets ease of use and ends up making use of `Reflection`. It does not generate code.
 
 # Leslie/UI
 If you have no problem extending new `classes`, `Leslie` also offers an easier way:
@@ -127,7 +142,7 @@ If you have no problem extending new `classes`, `Leslie` also offers an easier w
 }
  ```
  
- - `LeslieSingleBaseAdapter` (abstract class which provides default implementation of `BaseAdapter` and the view holder pattern using `Leslie`.)
+ - `LeslieSingleBaseAdapter` (abstract class which provides default implementation of `BaseAdapter` and the view holder pattern using `Leslie`. **Useful for views pre `RecyclerView`**)
  ```java
  public class ModelAdapter extends LeslieSingleBaseAdapter<Model>{
 
